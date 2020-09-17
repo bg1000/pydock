@@ -10,4 +10,4 @@
 env
 
 # Ensure these file are ignored
-test.py
+hint.txt

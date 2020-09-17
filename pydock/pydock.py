@@ -13,13 +13,14 @@ class ComposeFileManager(object):
     def __init__(self, config):
         self.docker_client = docker.from_env()
         self.versions = config["general"]["versions"]
+        self.compose_file_with_path = config["general"]["compose_file"]
         self.compose_file = os.path.basename(config["general"]["compose_file"])
         self.compose_path = os.path.dirname(config["general"]["compose_file"])
-
+        if not os.path.isfile(self.compose_file_with_path):
+            raise FileNotFoundError("Unable to locate " + self.compose_file_with_path)
     def rotate_files(self):
         file_list = self.list_versions()
         os.chdir(self.compose_path)
-        file_list.sort()
         for file_index in range(len(file_list) - 1, -1, -1):
             if file_index > self.versions - 1:
                 os.remove(file_list[file_index])
@@ -30,7 +31,7 @@ class ComposeFileManager(object):
                           "." + split_filename[1] + "." + str(version + 1))
 
     def add_ids(self):
-        with open(os.path.join(self.compose_path, self.compose_file), 'r') as ymlfile:
+        with open(self.compose_file_with_path, 'r') as ymlfile:
             self.original_compose = yaml.load(ymlfile, Loader=yaml.FullLoader)
         self.new_compose = copy.deepcopy(self.original_compose)
         for app in self.new_compose["services"]:
@@ -60,13 +61,21 @@ class ComposeFileManager(object):
 
     def list_versions(self):
         #
-        # returns docker-compose.yml + .1, .2, etc.
+        # returns 'compose_file', 'compose_file'.1, .2 etc.
+        # removes everything else including other variations of 'compose-file'
+        # e.g. - 'compose-file'.save would not be included
         #
         file_list = []
         temp_list = os.listdir(self.compose_path)
         for filename in temp_list:
-            if filename.startswith(self.compose_file):
-                file_list.append(filename)
+            if filename == self.compose_file:
+                file_list.append(filename)    
+            elif filename.startswith(self.compose_file):
+                file_parts = filename.split(".")
+                if len(file_parts)==3:
+                    if file_parts[2].isdigit():
+                        file_list.append(filename)
+        file_list.sort()
         return file_list
 
 
