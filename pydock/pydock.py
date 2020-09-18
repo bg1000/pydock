@@ -22,9 +22,11 @@ class ComposeFileManager(object):
         file_list = self.list_versions()
         os.chdir(self.compose_path)
         for file_index in range(len(file_list) - 1, -1, -1):
-            if file_index > self.versions - 1:
+            if file_index > self.versions:
                 os.remove(file_list[file_index])
             elif file_index < self.versions and file_index != 0:
+                logging.debug("file_index = " + str(file_index))
+                logging.debug("file = " + file_list[file_index] )
                 split_filename = file_list[file_index].split(".")
                 version = int(split_filename[2])
                 os.rename(file_list[file_index], split_filename[0] +
@@ -77,6 +79,8 @@ class ComposeFileManager(object):
                         file_list.append(filename)
         file_list.sort()
         return file_list
+    def __del__(self):
+        self.docker_client.close()
 
 
 def main():

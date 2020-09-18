@@ -11,3 +11,4 @@ env
 
 # Ensure these file are ignored
 hint.txt
+*.pyc
