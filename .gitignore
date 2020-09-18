@@ -8,6 +8,7 @@
 
 # Ignore folders.
 env
+__pycache__
 
 # Ensure these file are ignored
 hint.txt
