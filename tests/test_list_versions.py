@@ -3,11 +3,9 @@ import os
 from pydock.pydock import ComposeFileManager
 from unittest.mock import Mock
 config = {"general":{}}
-config["general"]["log_level"] = "INFO"
 config["general"]["versions"] = 5
 config["general"]["compose_file"] = "/docker/docker-compose.yml"
 
-test_cfm = ComposeFileManager(config)
 class ListVersionsTest(unittest.TestCase):
     
     def test_only_compose_file(self):

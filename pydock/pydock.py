@@ -59,7 +59,7 @@ class ComposeFileManager(object):
                 self.new_compose["services"][app]["image"] = base_image + \
                     "@" + reg_data.id
         with open(os.path.join(self.compose_path, self.compose_file) + ".1", 'w') as first_backup:
-            yaml.dump(self.new_compose, first_backup)
+            yaml.dump(self.new_compose, first_backup, sort_keys=False)
 
     def list_versions(self):
         #

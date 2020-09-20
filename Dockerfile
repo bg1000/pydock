@@ -7,5 +7,5 @@ WORKDIR /usr/src/app
 COPY ./requirements.txt .
 RUN pip install -r requirements.txt
 # ENV PYTHONUNBUFFERED 1 <- was in example but don't think I need
-COPY ./pydock/* .
+COPY ./pydock/* /usr/src/app/
 CMD python3 -u pydock.py

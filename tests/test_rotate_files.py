@@ -5,7 +5,6 @@ from unittest.mock import Mock
 from unittest.mock import call
 import logging
 config = {"general":{}}
-config["general"]["log_level"] = "INFO"
 config["general"]["versions"] = 3
 config["general"]["compose_file"] = "/docker/docker-compose.yml"
 
