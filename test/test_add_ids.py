@@ -25,28 +25,15 @@ class AddIdsTest(unittest.TestCase):
         # It verifies that given a certain return value from the docker sdk
         # add-ids will correctly change the yaml in the first backup
 
-        # open = Mock()
-        # yaml.load = Mock()
-        # yaml.load.return_value = 
-
-        # os.listdir.return_value = ["docker-compose.yml"]
-        # file_list = test_cfm.list_versions()
-        # expected_list = ["docker-compose.yml"]
-        # self.assertEqual(file_list, expected_list)
-
-    def test_with_docker_api(self):
-        pass
-        # This test mocks readings and writing files and injects a known test input file.
-        # It verifies the correct output file is generated and includes actually using the docker sdk
-        # If any of the image:tag specified in the test file are deleted from docker hub this test will break
- 
-        test_cfm = ComposeFileManager(config)
         open = Mock()
         yaml.load = Mock()
         yaml.load.return_value = self.test_input
-        test_cfm.add_ids()
- 
-        self.assertEqual(test_cfm.new_compose, self.test_output) 
+        test_cfm = ComposeFileManager(config)
+        # need to mock the two docker api calls 
+        # so that reg_data and base_image are set correctly.
+
+        # use .assert_called_once_with on the two docker sdk calls
+        # use self.assertEqual(xxx, yyy) to verify the output was set correctly
 
     
 if __name__ == '__main__':

@@ -1,30 +1,5 @@
 version: "2"
 services:
-  appdaemon:
-    image: acockburn/appdaemon:4.0.5
-    container_name: appdaemon
-    restart: unless-stopped
-    depends_on:
-      - homeassistant
-    env_file:
-      - ./appdaemon/conf/appdaemon.env
-    volumes:
-      - /docker/appdaemon/conf:/conf
-      - /etc/localtime:/etc/localtime:ro
-      - /docker/homeassistant/www/snapshots:/pics
-  bookstack:
-    image: linuxserver/bookstack:v0.29.3-ls104
-    container_name: bookstack
-    restart: unless-stopped
-    depends_on:
-      - db
-    env_file:
-      - ./bookstack/bookstack.env
-    volumes:
-      - /docker/bookstack/config:/config
-      - /etc/localtime:/etc/localtime:ro
-    ports:
-      - 6875:80
   db:
     image: mariadb:10.5.5-focal
     container_name: mariadb
@@ -37,26 +12,3 @@ services:
       - /docker/mariadb/backups:/backups
     ports:
       - 3306:3306
-  duckdns:
-    build: ./duckdns
-    container_name: duckdns
-    restart: unless-stopped
-    volumes:
-      - /docker/duckdns/log:/log
-      - /etc/localtime:/etc/localtime:ro
-  plex:
-    image: linuxserver/plex:1.20.1.3252-a78fef9a9-ls116
-    container_name: plex
-    restart: unless-stopped
-    env_file:
-      - ./plex/config/plex.env
-    network_mode: host
-    volumes:
-      - /docker/plex/config:/config
-      - /docker/plex/tv:/tv
-      - /docker/plex/movies:/movies
-      - /etc/localtime:/etc/localtime:ro
-
-
-
-

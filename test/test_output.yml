@@ -1,58 +1,14 @@
-version: '2'
+version: "2"
 services:
-  appdaemon:
-    image: acockburn/appdaemon@sha256:2ce20b7b4b547dd440911049d6c3b82c38d5facf802bb76f7cb4f32c2776bd6b
-    container_name: appdaemon
-    restart: unless-stopped
-    depends_on:
-    - homeassistant
-    env_file:
-    - ./appdaemon/conf/appdaemon.env
-    volumes:
-    - /docker/appdaemon/conf:/conf
-    - /etc/localtime:/etc/localtime:ro
-    - /docker/homeassistant/www/snapshots:/pics
-  bookstack:
-    image: linuxserver/bookstack@sha256:83390ffc7e2293fac61ec4cc83b946ef5c4a1790885f7b1af3baa0255e668911
-    container_name: bookstack
-    restart: unless-stopped
-    depends_on:
-    - db
-    env_file:
-    - ./bookstack/bookstack.env
-    volumes:
-    - /docker/bookstack/config:/config
-    - /etc/localtime:/etc/localtime:ro
-    ports:
-    - 6875:80
   db:
     image: mariadb@sha256:3c18e067d60fc9fa2b669d0820176840248d85ce51ff9ebb0f3869f61939194c
     container_name: mariadb
     restart: unless-stopped
     env_file:
-    - ./mariadb/MySQL.env
+      - ./mariadb/MySQL.env
     volumes:
-    - /docker/mariadb/data:/var/lib/mysql
-    - /etc/localtime:/etc/localtime:ro
-    - /docker/mariadb/backups:/backups
+      - /docker/mariadb/data:/var/lib/mysql
+      - /etc/localtime:/etc/localtime:ro
+      - /docker/mariadb/backups:/backups
     ports:
-    - 3306:3306
-  duckdns:
-    build: ./duckdns
-    container_name: duckdns
-    restart: unless-stopped
-    volumes:
-    - /docker/duckdns/log:/log
-    - /etc/localtime:/etc/localtime:ro
-  plex:
-    image: linuxserver/plex@sha256:7f2ca69550ece2efd04fbf95f1d5b69c7cdcaceeed21d9c0b540ac1919165fe1
-    container_name: plex
-    restart: unless-stopped
-    env_file:
-    - ./plex/config/plex.env
-    network_mode: host
-    volumes:
-    - /docker/plex/config:/config
-    - /docker/plex/tv:/tv
-    - /docker/plex/movies:/movies
-    - /etc/localtime:/etc/localtime:ro
+      - 3306:3306
