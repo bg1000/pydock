@@ -13,3 +13,5 @@ Since the user is already using docker that is the suggested deployment method. 
   3. compose_file - put the path to your compose file here.
  4. build the container with docker build -t pydock .
  5. run with docker docker run -v /path/to/compose:/path/to/compose/in/config/file -v /var/run/docker.sock:/var/run/docker.sock pydock
+
+ Run tests from top level (pydock) directory with `python3 -m unittest`

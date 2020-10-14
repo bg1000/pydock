@@ -10,7 +10,7 @@ config["general"]["compose_file"] = "/docker/docker-compose.yml"
 
 #
 # Create a ComposeFileManager
-# use Mock to test what happen when rotate_files is called
+# use Mock to test what happens when rotate_files is called
 
 # logging.basicConfig(level=logging.DEBUG)
 class RotateFilesTest(unittest.TestCase):
