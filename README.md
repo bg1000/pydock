@@ -1,17 +1,23 @@
 # pydock
 
-pydock creates versioned backups of docker-compose.yml inserting registry id's for tags.  So mariadb:latest becomes mariadb@sha256:e694a07f60a2bef2c48de9a2c852d05f8be9c76a8170b16f98809977398db07a
-allowing you to get back to the exact images you were running at a particular point in time.  The intended usage is for indivuduals who sometimes use the latest tag and want to be able to update the entire stack with a docker-compose pull docker-compose up -d and be able to go back if needed.
+When using docker-compose using the latest tag can be convenient but sometimes problematic as it is hard to get back to the previous image after an update. Pydock creates rotating backups of your docker-compose.yml file as docker-compose.yml.1, docker-compose.yml.2 etc. In each of these files the image tag is replace with the id from the docker repository.  For example, mariadb:latest might become mariadb@sha256:e694a07f60a2bef2c48de9a2c852d05f8be9c76a8170b16f98809977398db07a. These files are rotated such that docker-compose.yml.1 is always the most recent backup.  If your upgrade goes poorly getting back to the previous state can be as simple as running docker-compose -f docker-compose.yml.1 up -d.
 
-Usage
-Since the user is already using docker that is the suggested deployment method.  The steps to deploy are as follows:
+There is the possibility of course that new versions of applications have changed the data on disk. To cover this possibility I also recommend you backup the data with a snapshot or other method prior to upgrading.
+
+
+# Usage
+
+Since you are already using docker that is the suggested deployment method.  The steps to deploy are as follows:
+
 1. git clone https://github.com/bg1000/pydock.git
 2. cd pydock
 3. edit config.yaml.  There are three settings:
-  1. log_level - you may use any standard python logging level)
-  2. versions - pydock will create docker-compose.yml.1, docker-compose.yml.2, etc.  The files are rotated so docker-compose.yml.1 is always the most recent. Versions is an integer that specifies the number of versions you wish to keep.
-  3. compose_file - put the path to your compose file here.
+  - log_level - you may use any standard python logging level.
+  - versions - pydock will create docker-compose.yml.1, docker-compose.yml.2, etc.  The files are rotated so docker-compose.yml.1 is always the most recent. Versions is an integer that specifies the number of versions you wish to keep.
+  - compose_file - put the path to your compose file here.
  4. build the container with docker build -t pydock .
  5. run with docker docker run -v /path/to/compose:/path/to/compose/in/config/file -v /var/run/docker.sock:/var/run/docker.sock pydock
+
+If you find yourself changing the configuration often it may be convenient to store config outside of the container and create an additional volume mapping for that.
 
  Run tests from top level (pydock) directory with `python3 -m unittest`
