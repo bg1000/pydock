@@ -14,7 +14,7 @@ Since you are already using docker that is the suggested deployment method.  The
   - log_level - you may use any standard python logging level.
   - versions - pydock will create docker-compose.yml.1, docker-compose.yml.2, etc.  The files are rotated so docker-compose.yml.1 is always the most recent. Versions is an integer that specifies the number of versions you wish to keep.
   - compose_file - put the path to your compose file here.
- 4. build the container with `docker build -t pydock` .
+ 4. build the container with `docker build -t pydock .`
  5. run with `docker run -v /path/to/compose:/path/to/compose/in/config/file -v /var/run/docker.sock:/var/run/docker.sock pydock`
 
 If you find yourself changing the configuration often it may be convenient to store config.yaml outside of the container and create an additional volume mapping for that.
